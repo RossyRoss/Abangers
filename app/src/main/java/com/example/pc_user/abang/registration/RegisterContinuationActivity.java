@@ -80,7 +80,7 @@ public class RegisterContinuationActivity extends AppCompatActivity implements V
         camera1.setOnClickListener(this);
         camera2.setOnClickListener(this);
         refIds();
-
+        //Button ni
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
