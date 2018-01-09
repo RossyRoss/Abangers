@@ -35,14 +35,27 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity {
+    //declaring all objects
     private Button btnNext;
     private ImageView regImage;
     private ImageButton regBtnImage;
     private String userChoosenTask;
-    private EditText etusername, etuserpass,etuseremail, etuserfullname, etuseraddr, etusercontact;
+    private EditText etusername;
+    private EditText etuserpass;
+    private EditText etuseremail;
+    private EditText etuserfullname;
+    private EditText etuseraddr;
+    private EditText etusercontact;
+
+    //
+    private Uri holderUri;
+
+    //responsible for camera
     private int REQUEST_CAMERA = 0;
     private int SELECT_FILE = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btnNext = (Button) findViewById(R.id.btnnext);
         regImage = (ImageView) findViewById(R.id.imgview);
         regBtnImage = (ImageButton) findViewById(R.id.btncamera);
-        regBtnImage.setOnClickListener(this);
+
         try {
             refIds();
 
@@ -69,8 +82,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     String name = etuserfullname.getText().toString().trim();
                     String addr = etuseraddr.getText().toString().trim();
                     String contact = etusercontact.getText().toString().trim();
-                    if(!TextUtils.isEmpty(username) || !TextUtils.isEmpty(password) || !TextUtils.isEmpty(email) || !TextUtils.isEmpty(name) ||
-                            !TextUtils.isEmpty(addr) || !TextUtils.isEmpty(contact)) {
+                    if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(name) &&
+                            !TextUtils.isEmpty(addr) && !TextUtils.isEmpty(contact)) {
                         if(hasImage(regImage)) {
                             moveToContinuation();
                         }
@@ -84,6 +97,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                 }
 
+            });
+
+            regBtnImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectImage();
+                }
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,12 +130,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String contact = etusercontact.getText().toString().trim();
 
         Intent moveToNext = new Intent(getApplicationContext(), RegisterContinuationActivity.class);
-        Drawable drawable = regImage.getDrawable();
-        Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        moveToNext.putExtra("picture", b);
         moveToNext.putExtra("username", username);
         moveToNext.putExtra("password", password);
         moveToNext.putExtra("email", email);
@@ -135,15 +149,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btncamera:
-                selectImage();
-                break;
-        }
     }
 
     private void selectImage() {
@@ -220,13 +225,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void onCaptureImageResult(Intent data) {
         Uri uri = data.getData();
+        holderUri = uri;
         regImage.setImageURI(uri);
         regImage.setBackgroundResource(0);
 
     }
 
     private void onSelectFromGalleryResult(Intent data) {
-       Uri uri = data.getData();
+        Uri uri = data.getData();
+        holderUri = uri;
         regImage.setImageURI(uri);
         regImage.setBackgroundResource(0);
     }

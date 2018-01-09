@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -43,53 +44,92 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 
-public class RegisterContinuationActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterContinuationActivity extends AppCompatActivity {
+    //Declaring all objects
     private ImageView imageView1;
     private ImageView imageView2;
-    private ImageButton camera1;
-    private ImageButton camera2;
+    private ImageButton btnCamera1;
+    private ImageButton btnCamera2;
     private Button registerBtn;
-    private String userChoosenTask;
     private RadioGroup radioGroup;
+    private RadioButton radioBtnOwner;
+    private RadioButton radioBtnRenter;
+
+    //Declaring all holders
+    private String name = null;
+    private String pass = null;
+    private String email = null;
+    private String username = null;
+    private String addr = null;
+    private String type = null;
+    private String contact = null;
+
+    //Responsible for photos
+    private String userChoosenTask;
+    private Uri holder1 = null;
+    private Uri holder2 = null;
     private int REQUEST_CAMERA = 0;
     private int SELECT_FILE = 1;
     private int holder = 0;
     private ProgressDialog progressDialog;
+
+    //Firebase variables
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mDatabase, mDatabaseDetail;
     private StorageReference mStorage;
-    private Uri holder1 = null;
-    private Uri holder2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_continuation);
-        mStorage = FirebaseStorage.getInstance().getReference();
+        //Database
+        mStorage = FirebaseStorage.getInstance().getReference("Photos");
         mDatabase = FirebaseDatabase.getInstance().getReference("UHFile");
         mDatabaseDetail = FirebaseDatabase.getInstance().getReference("UDFile");
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //Camera
+        btnCamera1 = (ImageButton) findViewById(R.id.btncamera);
+        btnCamera2 = (ImageButton) findViewById(R.id.btncamera2);
         progressDialog = new ProgressDialog(this);
+
+        //Referencing all objects
+        radioBtnOwner = (RadioButton) findViewById(R.id.radioOwner);
+        radioBtnRenter = (RadioButton) findViewById(R.id.radioRenter);
         imageView1 = (ImageView) findViewById(R.id.imgview);
         imageView2 = (ImageView) findViewById(R.id.imgview2);
         registerBtn = (Button) findViewById(R.id.btnreg);
         radioGroup = (RadioGroup) findViewById(R.id.userType);
-        camera1 = (ImageButton) findViewById(R.id.btncamera);
-        camera2 = (ImageButton) findViewById(R.id.btncamera2);
-        camera1.setOnClickListener(this);
-        camera2.setOnClickListener(this);
+
+
         refIds();
-        //Button ni
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!hasImage(imageView1) || !hasImage(imageView2) || radioGroup.getCheckedRadioButtonId() == -1) {
-                    Toast.makeText(getApplicationContext(), "Fill necessary info", Toast.LENGTH_SHORT).show();
+                    toastMethod("Fill necessary info");
                 }
                 else {
                     registerAccount();
                 }
+            }
+        });
+
+        btnCamera1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+                holder = 1;
+            }
+        });
+
+        btnCamera2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+                holder = 2;
             }
         });
 
@@ -102,13 +142,8 @@ public class RegisterContinuationActivity extends AppCompatActivity implements V
     }
 
     private void registerAccount() {
-        String name = null;
-        String pass = null;
-        String email = null;
-        String username = null;
-        String addr = null;
-        String contact = null;
         Bundle bundle = getIntent().getExtras();
+
         if(bundle != null) {
             name = bundle.getString("name");
             pass = bundle.getString("password");
@@ -116,45 +151,43 @@ public class RegisterContinuationActivity extends AppCompatActivity implements V
             username = bundle.getString("username");
             addr = bundle.getString("addr");
             contact = bundle.getString("contact");
-            byte[] b = bundle.getByteArray("picture");
-            Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
+        }
+        if(radioBtnRenter.isChecked()) {
+            type = "Renter";
+        } else if(radioBtnOwner.isChecked()) {
+            type = "Owner";
         }
 
-        Toast.makeText(getApplicationContext(), email, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), pass, Toast.LENGTH_SHORT).show();
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
 
-        final String finalUsername = username;
-        final String finalPass = pass;
-        final String finalName = name;
-        final String finalAddr = addr;
-        final String finalEmail = email;
-        assert email != null;
-        assert pass != null;
         firebaseAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            //add data to UHFile
-                            String id = user.getUid();
-                            UHFile newUser = new UHFile(id, finalUsername, finalPass,"AC");
+                            //insert data to UHFile
+                            final String id = user.getUid();
+                            UHFile newUser = new UHFile(id, username, pass,"AC");
                             mDatabase.child(id).setValue(newUser);
-                            UDFile newUserDetail = new UDFile(id, finalName, finalAddr, finalEmail, "AC");
-                            mDatabaseDetail.child(id).setValue(newUserDetail);
-                            StorageReference filepath1 = mStorage.child("Photos").child(holder1.getLastPathSegment());
+
+                            final StorageReference filepath1 = mStorage.child(id).child(holder1.getLastPathSegment());
                             filepath1.putFile(holder1).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    Toast.makeText(getApplicationContext(), "Successfully Requested!", Toast.LENGTH_SHORT).show();
+                                    toastMethod("Successfully requested");
+                                    final Uri imageUri = taskSnapshot.getDownloadUrl();
+                                    String imageNbi = imageUri.toString();
+                                    //insert data to UDFile
+                                    UDFile newUserDetail = new UDFile(id, name, addr, email, "AC", type, contact, imageNbi);
+                                    mDatabaseDetail.child(id).setValue(newUserDetail);
                                     progressDialog.hide();
                                 }
                             });
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Technical difficulties!", Toast.LENGTH_SHORT).show();
+                            toastMethod("Technical Difficulties");
                             progressDialog.hide();
                         }
                     }
@@ -181,20 +214,6 @@ public class RegisterContinuationActivity extends AppCompatActivity implements V
                 finish();
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btncamera:
-                holder =1;
-                selectImage();
-                break;
-            case R.id.btncamera2:
-                selectImage();
-                holder = 2;
-                break;
-        }
     }
 
     private void selectImage() {
@@ -249,7 +268,7 @@ public class RegisterContinuationActivity extends AppCompatActivity implements V
                         galleryIntent();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Denied!", Toast.LENGTH_SHORT).show();
+                    toastMethod("Denied!");
                 }
                 break;
         }
@@ -295,5 +314,9 @@ public class RegisterContinuationActivity extends AppCompatActivity implements V
             holder2 = uri;
             imageView2.setBackgroundResource(0);
         }
+    }
+
+    public void toastMethod(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
