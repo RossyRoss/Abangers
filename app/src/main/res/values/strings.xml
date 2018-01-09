@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Abang</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="logo">Abang</string>
+    <string name="contextDesc">Abang Logo</string>
+    <string name="forgot">Forgot Password?</string>
+
+    //Registration
+    <string name="regusername">Username</string>
+    <string name="regpassword">Password</string>
+    <string name="regemail">Email</string>
+    <string name="regfullname">Full Name</string>
+    <string name="regaddress">Address</string>
+    <string name="regcontact">Contact Number</string>
+    <string name="regcontent">Profile Pic</string>
+</resources>

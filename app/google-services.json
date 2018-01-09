@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "446285241164",
+    "firebase_url": "https://abang-app.firebaseio.com",
+    "project_id": "abang-app",
+    "storage_bucket": "abang-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446285241164:android:8b2a45c553b98b7b",
+        "android_client_info": {
+          "package_name": "com.example.pc_user.abang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446285241164-leal1h28sancggv5gtj4lc0u87470l41.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1yt4r8rDRidB2LYiZoF-pP19EW-nTU6Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446285241164:android:5246defff63593b0",
+        "android_client_info": {
+          "package_name": "com.abang.abangbeta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446285241164-qo7pctspahuo583n0pkbdmoa4d7pmse5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abang.abangbeta",
+            "certificate_hash": "61b73bc028b69feaa86ec4016cc3c8c829cb5af4"
+          }
+        },
+        {
+          "client_id": "446285241164-leal1h28sancggv5gtj4lc0u87470l41.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1yt4r8rDRidB2LYiZoF-pP19EW-nTU6Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446285241164-leal1h28sancggv5gtj4lc0u87470l41.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

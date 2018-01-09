@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    tools:context="com.example.pc_user.abang.registration.RegisterContinuationActivity">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        android:id="@+id/toolbar"
+        android:theme="@style/ToolBar"
+        app:titleTextColor="@color/white"
+        android:background="@color/colorAccent">
+
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NBI Clearance:"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="97dp"
+                    android:id="@+id/imgview"
+                    android:background="@drawable/photo"
+                    android:layout_marginStart="42dp"
+                    android:layout_marginTop="10dp"/>
+
+                <ImageButton
+                    android:id="@+id/btncamera"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/camera2"
+                    android:layout_alignEnd="@+id/imgview"
+                    android:layout_alignBottom="@+id/imgview"
+                    android:contentDescription="@string/regcontent"/>
+
+            </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Secondary ID:"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="97dp"
+                    android:id="@+id/imgview2"
+                    android:background="@drawable/photo"
+                    android:layout_marginStart="42dp"
+                    android:layout_marginTop="10dp"/>
+
+                <ImageButton
+                    android:id="@+id/btncamera2"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="75dp"
+                    android:background="@drawable/camera2"
+                    android:layout_alignEnd="@+id/imgview2"
+                    android:layout_alignBottom="@+id/imgview2"
+                    android:contentDescription="@string/regcontent"/>
+
+            </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Type:"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:id="@+id/userType">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car Owner"
+                android:id="@+id/radioOwner"
+                android:textColor="@color/white" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car Renter"
+                android:id="@+id/radioRenter"
+                android:textColor="@color/white"/>
+        </RadioGroup>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorAccent"
+            android:text="Register"
+            android:id="@+id/btnreg"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="normal"/>
+    </RelativeLayout>
+</LinearLayout>
