@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,21 +15,27 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".registration.SplashActivity">
+        <activity android:name=".car_owner.car_owner" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDIbTWlYtIrU-2p2yImZXv7cQl9vhxHPbs" />
+
         <activity
             android:name=".registration.LoginActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan">
-        </activity>
-        <activity android:name=".registration.RegisterActivity">
-        </activity>
-        <activity android:name=".registration.RegisterContinuationActivity">
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity android:name=".registration.RegisterActivity" />
+        <activity android:name=".registration.RegisterContinuationActivity" />
 
-        </activity>
+
+        <activity android:name=".registration.SplashActivity" />
+
     </application>
+
 </manifest>
